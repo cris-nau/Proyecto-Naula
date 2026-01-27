@@ -48,4 +48,8 @@ public class RolDAO {
             return null; 
         }
     }
+
+    public Rol buscarPorId(int id) {
+        return em.find(Rol.class, id);
+    }
 }

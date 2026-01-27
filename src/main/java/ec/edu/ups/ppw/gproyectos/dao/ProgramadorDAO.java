@@ -33,7 +33,18 @@ public class ProgramadorDAO {
     }
 
     public List<Programador> getAll() {
-        String jpql = "SELECT p FROM Programador p JOIN FETCH p.horarios";
+        String jpql = "SELECT p FROM Programador p";
         return em.createQuery(jpql, Programador.class).getResultList();
+    }
+    
+    public Programador getProgramadorPorEmail(String email) {
+        try {
+            String jpql = "SELECT p FROM Programador p WHERE p.email = :email";
+            Query q = em.createQuery(jpql, Programador.class);
+            q.setParameter("email", email);
+            return (Programador) q.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

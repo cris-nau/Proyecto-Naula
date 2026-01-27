@@ -14,7 +14,7 @@ public class Usuario {
     @Column(name="usu_email", unique=true)
     private String email;
     
-    @Column(name="usu_passwrod", unique=true)
+    @Column(name="usu_passwrod")
     private String password;
     
     @Column(name="usu_nombre")
@@ -34,7 +34,7 @@ public class Usuario {
     private Rol rol;
     
     
-
+	//ad
 	public String getPassword() {
 		return password;
 	}

@@ -24,22 +24,19 @@ public class SolicitudDAO {
     public void update(Solicitud solicitud) {
         em.merge(solicitud);
     }
-
-    public void delete(int id) {
-        Solicitud solicitud = em.find(Solicitud.class, id);
-        em.remove(solicitud);
-    }
-
-    public List<Solicitud> getAll() {
-        String jpql = "SELECT s FROM Solicitud s";
+    
+    public List<Solicitud> getPorUsuario(int usuarioId) {
+        String jpql = "SELECT s FROM Solicitud s WHERE s.usuario.id = :uid";
         Query q = em.createQuery(jpql, Solicitud.class);
+        q.setParameter("uid", usuarioId);
         return q.getResultList();
     }
-    
-    public List<Solicitud> getSolicitudesPorUsuario(int usuarioId) {
-        String jpql = "SELECT s FROM Solicitud s WHERE s.usuario.id = :id";
+
+    // Ver solicitudes que ME hicieron (Programador)
+    public List<Solicitud> getPorProgramador(int programadorId) {
+        String jpql = "SELECT s FROM Solicitud s WHERE s.programador.id = :pid";
         Query q = em.createQuery(jpql, Solicitud.class);
-        q.setParameter("id", usuarioId);
+        q.setParameter("pid", programadorId);
         return q.getResultList();
     }
 }
