@@ -42,4 +42,12 @@ public class GestionProgramadores {
         
         daoProgramador.update(programador);
     }
+    
+    public void guardarProgramador(Programador programador) throws Exception {
+        if (daoProgramador.read(programador.getId()) == null) {
+            daoProgramador.insert(programador);
+        } else {
+            daoProgramador.update(programador);
+        }
+    }
 }	

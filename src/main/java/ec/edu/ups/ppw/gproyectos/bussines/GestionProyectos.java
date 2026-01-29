@@ -19,12 +19,23 @@ public class GestionProyectos {
     private ProgramadorDAO daoProgramador; 
     
     public void crearProyecto(Proyecto proyecto, int programadorId) throws Exception {
+        // 1. Buscamos al dueño del proyecto
         Programador prog = daoProgramador.read(programadorId);
+        
         if (prog == null) {
             throw new Exception("Error: El programador con ID " + programadorId + " no existe.");
         }
         
+        // 2. Vinculamos ambas partes (Bidireccionalidad)
         proyecto.setProgramador(prog);
+        
+        // Si inicializaste la lista como = new ArrayList<>() en el modelo, 
+        // esto evita inconsistencias antes de que se refresque la sesión.
+        if(prog.getProyectos() != null) {
+            prog.getProyectos().add(proyecto);
+        }
+        
+        // 3. Persistimos
         daoProyecto.insert(proyecto);
     }
     

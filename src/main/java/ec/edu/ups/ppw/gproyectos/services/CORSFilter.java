@@ -6,8 +6,10 @@ import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
 import jakarta.ws.rs.container.ContainerResponseFilter;
 import jakarta.ws.rs.ext.Provider;
+import jakarta.ws.rs.container.PreMatching;
 
 @Provider
+@PreMatching
 public class CORSFilter implements ContainerResponseFilter {
 
 	@Override
@@ -15,6 +17,8 @@ public class CORSFilter implements ContainerResponseFilter {
 		
 		responseContext.getHeaders().add("Access-Control-Allow-Origin", "http://localhost:4200");
         
+		
+		
         // 2. Permitir las cabeceras de autorización y contenido
         responseContext.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, x-requested-with");
         
@@ -29,4 +33,6 @@ public class CORSFilter implements ContainerResponseFilter {
             responseContext.setStatus(Response.Status.OK.getStatusCode());
         }
     }
+
+
 }

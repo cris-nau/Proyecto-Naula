@@ -1,5 +1,6 @@
 package ec.edu.ups.ppw.gproyectos.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.*;
 
@@ -8,9 +9,8 @@ import jakarta.persistence.*;
 public class Programador {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="prog_id")
-    private int id;
+    @Column(name="usu_id")
+    private Integer id;
 
     @Column(name="prog_nombre")
     private String nombre; 
@@ -33,15 +33,14 @@ public class Programador {
     @Column(name="prog_foto")
     private String foto;
     
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "programador")
-    private List<Horario> horarios;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "programador") 
+    private List<Horario> horarios = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "programador")
+    private List<RedSocial> redesSociales = new ArrayList<>();
     
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "programador")
-    private List<RedSocial> redesSociales;
-    
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "programador")
-    private List<Proyecto> proyectos;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "programador")
+    private List<Proyecto> proyectos = new ArrayList<>();
     
     
 
@@ -53,7 +52,7 @@ public class Programador {
 		this.proyectos = proyectos;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 

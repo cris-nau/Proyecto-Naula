@@ -1,7 +1,7 @@
 package ec.edu.ups.ppw.gproyectos.utils;
 
 import java.io.InputStream;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 import com.google.auth.oauth2.GoogleCredentials;

@@ -63,6 +63,7 @@ public class Horario implements Serializable{
 		this.modalidad = modalidad;
 	}
 
+	@JsonbTransient
 	public Programador getProgramador() {
 		return programador;
 	}

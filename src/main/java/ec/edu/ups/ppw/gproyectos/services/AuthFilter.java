@@ -15,46 +15,40 @@ import com.google.firebase.auth.FirebaseToken;
 public class AuthFilter implements ContainerRequestFilter {
 
 	@Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
-		
-		if (requestContext.getMethod().equals("GET")) {
-	        return; // ¡Pase usted!
-	    }
-		
-        String path = requestContext.getUriInfo().getPath();
-        String method = requestContext.getMethod();
-        if (path.contains("publico")) { 
-            return;
-        }
-        if (method.equals("GET")) {
-            return; 
-        }
-        
-        if (path.contains("usuario") && method.equals("POST")) {
-            return; 
-        }
-        
-        String authHeader = requestContext.getHeaderString("Authorization");
-        
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                .entity("No se encontró el Token de autorización").build());
-            return;
-        }
-        
-        String token = authHeader.substring(7);
+	public void filter(ContainerRequestContext requestContext) throws IOException {
+	    String method = requestContext.getMethod();
+	    String path = requestContext.getUriInfo().getPath();
 
-        try {
-            FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
-            
-            String email = decodedToken.getEmail();
-            System.out.println("Usuario autorizado: " + email);
-            
-        } catch (Exception e) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                .entity("Token inválido o expirado").build());
-        }
-        
-        
-    }
+	    // 1. REGLA DE ORO: Todo lo que sea GET es público (para ver el portafolio)
+	    if (method.equals("GET")) {
+	        return; 
+	    }
+
+	    // 2. EXCEPCIÓN: Si creaste una ruta específica que empiece con "publico/"
+	    if (path.startsWith("publico")) {
+	        return;
+	    }
+
+	    // 3. SEGURIDAD: Para POST, PUT, DELETE, exigimos el Token
+	    String authHeader = requestContext.getHeaderString("Authorization");
+
+	    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+	        requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+	            .entity("{\"error\": \"Acceso denegado. Se requiere Token.\"}").build());
+	        return;
+	    }
+
+	    try {
+	        String token = authHeader.substring(7);
+	        // Firebase verifica la firma y la caducidad
+	        FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+	        
+	        // Opcional: Puedes meter el email en el contexto por si lo necesitas luego
+	        requestContext.setProperty("userEmail", decodedToken.getEmail());
+
+	    } catch (Exception e) {
+	        requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+	            .entity("{\"error\": \"Token inválido o expirado\"}").build());
+	    }
+	}
 }

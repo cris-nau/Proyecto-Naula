@@ -1,11 +1,11 @@
 package ec.edu.ups.ppw.gproyectos.dao;
 
 import java.util.List;
+
 import ec.edu.ups.ppw.gproyectos.model.RedSocial;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 
 @Stateless
 public class RedSocialDAO {

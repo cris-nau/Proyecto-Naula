@@ -14,16 +14,16 @@ public class ProyectoDAO {
 	@PersistenceContext 
 	private EntityManager em;
     
-    public void insert(ec.edu.ups.ppw.gproyectos.model.Proyecto p) 
-    { 
-    	em.persist(p); 
-    }
-    public void update(ec.edu.ups.ppw.gproyectos.model.Proyecto p) 
-    { 
-    	em.merge(p); 
-    }
+	public void insert(Proyecto p) { 
+	    em.persist(p); 
+	}
+
+	public void update(Proyecto p) { 
+	    em.merge(p); 
+	}
+    
     public void delete(int id) { 
-        ec.edu.ups.ppw.gproyectos.model.Proyecto p = em.find(ec.edu.ups.ppw.gproyectos.model.Proyecto.class, id);
+        Proyecto p = em.find(Proyecto.class, id);
         if(p!=null) em.remove(p);
     }
     
