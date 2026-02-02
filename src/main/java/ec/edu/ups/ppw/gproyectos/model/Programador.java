@@ -2,6 +2,7 @@ package ec.edu.ups.ppw.gproyectos.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,7 +10,7 @@ import jakarta.persistence.*;
 public class Programador {
 
 	@Id
-    @Column(name="usu_id")
+    @Column(name="prog_id")
     private Integer id;
 
     @Column(name="prog_nombre")
@@ -33,17 +34,15 @@ public class Programador {
     @Column(name="prog_foto")
     private String foto;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "programador") 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "programador", fetch = FetchType.EAGER)
     private List<Horario> horarios = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "programador")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "programador", fetch = FetchType.EAGER)
     private List<RedSocial> redesSociales = new ArrayList<>();
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "programador")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "programador", fetch = FetchType.EAGER)
     private List<Proyecto> proyectos = new ArrayList<>();
     
-    
-
 	public List<Proyecto> getProyectos() {
 		return proyectos;
 	}
@@ -115,7 +114,7 @@ public class Programador {
 	public void setFoto(String foto) {
 		this.foto = foto;
 	}
-
+	
 	public List<Horario> getHorarios() {
 		return horarios;
 	}
@@ -123,7 +122,7 @@ public class Programador {
 	public void setHorarios(List<Horario> horarios) {
 		this.horarios = horarios;
 	}
-
+	
 	public List<RedSocial> getRedesSociales() {
 		return redesSociales;
 	}

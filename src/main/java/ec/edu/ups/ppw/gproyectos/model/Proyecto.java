@@ -32,6 +32,7 @@ public class Proyecto {
     
     @ManyToOne
     @JoinColumn(name = "prog_id_fk")
+    @JsonbTransient
     private Programador programador;
 
     public int getId() { return id; }

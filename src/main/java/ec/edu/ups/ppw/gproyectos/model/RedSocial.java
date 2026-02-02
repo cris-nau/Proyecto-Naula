@@ -23,6 +23,7 @@ public class RedSocial {
     
     @ManyToOne
     @JoinColumn(name = "prog_id_fk")
+    @JsonbTransient
     private Programador programador;
 
 	public int getId() {
