@@ -272,6 +272,9 @@
 			    <groupId>fish.payara.maven.plugins</groupId>
 			    <artifactId>payara-micro-maven-plugin</artifactId>
 			    <version>2.0</version>
+			    <configuration>
+			        <finalName>gproyectos-microbundle</finalName>
+			    </configuration>
 			    <executions>
 			        <execution>
 			            <goals>
