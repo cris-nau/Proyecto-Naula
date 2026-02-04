@@ -4,7 +4,7 @@
     <jdbc-connection-pool 
         name="NaulaPool" 
         res-type="javax.sql.DataSource" 
-        datasource-classname="org.postgresql.ds.PGConnectionPoolDataSource"
+        datasource-classname="org.postgresql.ds.PGSimpleDataSource"
         steady-pool-size="1" 
         max-pool-size="5">
         
