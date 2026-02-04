@@ -13,26 +13,22 @@ import jakarta.ws.rs.container.PreMatching;
 public class CORSFilter implements ContainerResponseFilter {
 
 	@Override
-    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
-		
-		responseContext.getHeaders().add("Access-Control-Allow-Origin", "http://localhost:4200");
-        
-		
-		
-        // 2. Permitir las cabeceras de autorización y contenido
-        responseContext.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, x-requested-with");
-        
-        // 3. Permitir los métodos necesarios
-        responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-        
-        // 4. Permitir credenciales si fuera necesario
-        responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
+	public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+	    
+	    // CAMBIA ESTO: De "http://localhost:4200" a "*"
+	    responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
+	    
+	    // El resto déjalo igual, pero asegúrate de que estas líneas estén presentes:
+	    responseContext.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization, x-requested-with");
+	    responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+	    
+	    // IMPORTANTE: Si usas "*", cambia el "true" por "false" en Credentials o simplemente borra la línea
+	    responseContext.getHeaders().add("Access-Control-Allow-Credentials", "false");
 
-        // MAGIA: Si la petición es de tipo OPTIONS (la pre-consulta), respondemos OK y terminamos
-        if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
-            responseContext.setStatus(Response.Status.OK.getStatusCode());
-        }
-    }
+	    if (requestContext.getMethod().equalsIgnoreCase("OPTIONS")) {
+	        responseContext.setStatus(Response.Status.OK.getStatusCode());
+	    }
+	}
 
 
 }
