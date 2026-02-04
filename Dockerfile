@@ -1,21 +1,24 @@
-# 1. Compilación (Usando Java 17 para evitar el error de versión)
+# 1. Compilación
 FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-# Creamos el WAR. El skipTests ahorra tiempo y errores de entorno.
 RUN mvn clean package -DskipTests
 
-# 2. Ejecución (Payara Micro sobre Java 17)
+# 2. Ejecución
 FROM payara/micro:6.2023.10-jdk17
 WORKDIR /opt/payara
 
-# Copiamos el WAR generado y lo renombramos a ROOT.war
-# Esto hace que tu app responda en la URL principal (/) sin poner el nombre del proyecto
+# Copiamos el WAR a la carpeta de autodespliegue como ROOT.war
 COPY --from=build /app/target/*.war /opt/payara/deployments/ROOT.war
 
-# Límite de memoria para evitar el error "Killed" en Railway
+# Copiamos el XML de recursos
+COPY glassfish-resources.xml /opt/payara/glassfish-resources.xml
+
+# Límite de memoria (Bien hecho, esto es vital en Railway)
 ENV JAVA_TOOL_OPTIONS="-Xmx300m -Xms150m"
 
-# Comando de arranque optimizado
-ENTRYPOINT ["java", "-jar", "payara-micro.jar", "--deploymentDir", "deployments", "--port", "8080", "--nocluster"]
+# --- CORRECCIÓN ---
+# Eliminé el CMD y puse todo en el ENTRYPOINT.
+# Agregué "--resources /opt/payara/glassfish-resources.xml" explícitamente.
+ENTRYPOINT ["java", "-jar", "payara-micro.jar", "--deploymentDir", "deployments", "--resources", "/opt/payara/glassfish-resources.xml", "--port", "8080", "--nocluster"]
